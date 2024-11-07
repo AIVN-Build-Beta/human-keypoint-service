@@ -1,0 +1,3 @@
+['remote "digitalocean"']
+    url = s3://build-beta/human-keypoint-detection/lite-hrnet-onnx
+    endpointurl = https://build-beta.sgp1.digitaloceanspaces.com

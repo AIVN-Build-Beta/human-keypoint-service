@@ -1,0 +1,15 @@
+--extra-index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-11/pypi/simple/
+
+# cpu only
+# onnxruntime
+
+# gpu
+onnxruntime-gpu
+
+# common
+fastapi
+uvicorn[standard]
+pydantic-settings
+python-multipart
+numpy
+opencv-python

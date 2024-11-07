@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  human-keypoint-api:
+    image: human-keypoint-service:latest
+    ports:
+      - "8000:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      - KEYPOINT_MODEL_PATH=/app/models/model.onnx
+      - KEYPOINT_DEVICE=gpu
+      - KEYPOINT_MAX_IMAGE_SIZE=1024
