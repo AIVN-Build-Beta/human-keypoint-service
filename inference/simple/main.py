@@ -6,11 +6,11 @@ ort.set_default_logger_severity(3)
 
 
 class HumanKeypointOnnxModel:
-    def __init__(self, model_path: str, device: str = "cpu"):
+    def __init__(self, weight_path: str, device: str = "cpu"):
         if device == "gpu":
-            self.session = ort.InferenceSession(model_path, providers=["CUDAExecutionProvider"])
+            self.session = ort.InferenceSession(weight_path, providers=["CUDAExecutionProvider"])
         elif device == "cpu":
-            self.session = ort.InferenceSession(model_path)
+            self.session = ort.InferenceSession(weight_path)
         else:
             raise ValueError(f"Invalid device: {device}")
 

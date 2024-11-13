@@ -3,7 +3,7 @@ from typing import Literal
 
 
 class Settings(BaseSettings):
-    model_path: str = "models/model.onnx"
+    weight_path: str = "models/model.onnx"
     device: Literal["cpu", "gpu"] = "gpu"
     confidence_threshold: float = 0.1
     max_image_size: int = 1920  # Maximum size for any dimension

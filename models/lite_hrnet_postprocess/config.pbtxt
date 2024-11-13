@@ -1,0 +1,29 @@
+
+name: "lite_hrnet_postprocess"
+backend: "python"
+
+input [
+    {
+        name: "heatmaps"
+        data_type: TYPE_FP32
+        dims: [ 1, 17, 96, 72 ]
+    },
+    {
+        name: "orig_shape"
+        data_type: TYPE_INT32
+        dims: [ 1, 2 ]
+    }
+]
+
+output [
+    {
+        name: "keypoints"
+        data_type: TYPE_INT32
+        dims: [ 1, 17, 2 ]
+    },
+    {
+        name: "confidences"
+        data_type: TYPE_FP32
+        dims: [ 1, 17 ]
+    }
+]

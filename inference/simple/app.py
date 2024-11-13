@@ -15,7 +15,7 @@ async def lifespan(app: FastAPI):
     # Startup
     global model
     settings = Settings()
-    model = HumanKeypointOnnxModel(settings.model_path, settings.device)
+    model = HumanKeypointOnnxModel(settings.weight_path, settings.device)
     yield
 
 

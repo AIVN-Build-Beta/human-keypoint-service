@@ -1,10 +1,13 @@
 version: '3.8'
 
 services:
-  human-keypoint-api:
-    image: human-keypoint-service:latest
+  human-keypoint-ai-service:
+    image: human-keypoint-ai-service
+    build:
+      context: .
+      dockerfile: docker/fastapi-ai.Dockerfile
     ports:
-      - "8000:8000"
+      - "8005:8000"
     deploy:
       resources:
         reservations:
@@ -13,6 +16,39 @@ services:
               count: 1
               capabilities: [gpu]
     environment:
-      - KEYPOINT_MODEL_PATH=/app/models/model.onnx
+      - KEYPOINT_WEIGHT_PATH=/app/models/model.onnx
       - KEYPOINT_DEVICE=gpu
       - KEYPOINT_MAX_IMAGE_SIZE=1024
+
+  triton-mount:
+    image: nvcr.io/nvidia/tritonserver:23.10-py3
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+      - "8002:8002"
+    volumes:
+      - ./models:/models
+    command: tritonserver --model-repository=/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  triton-build:
+    build:
+      context: .
+      dockerfile: docker/triton.Dockerfile
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+      - "8002:8002"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
