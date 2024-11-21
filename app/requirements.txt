@@ -1,0 +1,7 @@
+streamlit==1.28.1
+opencv-python==4.8.1.78
+numpy==1.26.1
+pillow==10.1.0
+prometheus-client==0.18.0
+pydantic-settings==2.0.3
+tritonclient[all]==2.34.0
