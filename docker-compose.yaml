@@ -56,7 +56,7 @@ services:
   streamlit-app:
     build:
       context: .
-      dockerfile: docker/app.Dockerfile
+      dockerfile: docker/streamlit.Dockerfile
     ports:
       - "8501:8501"
 
@@ -66,3 +66,8 @@ services:
       - "9090:9090"
     volumes:
       - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
