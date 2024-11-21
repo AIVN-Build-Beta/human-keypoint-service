@@ -2,21 +2,21 @@ import cv2
 import numpy as np
 import streamlit as st
 from PIL import Image
-from src.config import config
+from src.config import app_config
 from src.litehrnet import LiteHRNetClient
 
 # Set the page layout to wide
 st.set_page_config(layout="wide")
 
 # Initialize the LiteHRNetClient with configuration
-client = LiteHRNetClient(triton_url=config.triton_url,
-                         model_name=config.model_name,
-                         model_version=config.model_version,
-                         use_http=config.use_http)
+client = LiteHRNetClient(url=app_config.triton_url,
+                         model_name=app_config.model_name,
+                         model_version=app_config.model_version,
+                         use_http=app_config.use_http)
 
 def detect_keypoints(image):
     # Use LiteHRNetClient to detect keypoints
-    keypoints = client.predict(image)
+    keypoints, conf = client.predict(image)
     return keypoints
 
 def plot_keypoints(image, keypoints):
@@ -39,7 +39,7 @@ uploaded_files = st.file_uploader("Upload Images", type=["png", "jpg", "jpeg"], 
 
 if uploaded_files:
     # Use the number of columns from config
-    num_columns = config.num_columns
+    num_columns = app_config.num_columns
     columns = st.columns(num_columns)
 
     for idx, uploaded_file in enumerate(uploaded_files):
@@ -49,7 +49,7 @@ if uploaded_files:
         with col:
             # Display thumbnail without caption
             image = Image.open(uploaded_file)
-            thumbnail_size = config.thumbnail_size  # Use thumbnail size from config
+            thumbnail_size = app_config.thumbnail_size  # Use thumbnail size from config
             thumbnail = image.resize(thumbnail_size)  # Resize to thumbnail size
             st.image(thumbnail, use_container_width=True)  # No caption
 
