@@ -1,5 +1,5 @@
 import cv2
-from triton.client import LiteHRNetClient, LiteHRNetFullClient
+from src.litehrnet import LiteHRNetClient, LiteHRNetFullClient
 
 
 def draw_keypoints(image, keypoints, confidences):
