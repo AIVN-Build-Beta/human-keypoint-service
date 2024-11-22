@@ -12,6 +12,8 @@ RUN pip install -r requirements.txt
 
 COPY app/ .
 
+ENV PYTHONPATH=.
+
 EXPOSE 8501
 
 # Run Streamlit app

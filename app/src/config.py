@@ -11,7 +11,7 @@ class AppConfig(BaseSettings):
     model_version: str = "1"
     use_http: bool = True
 
-    prometheus_port: int = 8005
+    pushgateway_url: str = "localhost:9091"
 
     class Config:
         env_prefix = 'APP_'

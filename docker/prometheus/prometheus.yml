@@ -2,6 +2,6 @@ global:
   scrape_interval: 5s
 
 scrape_configs:
-  - job_name: 'human_keypoint_app'
+  - job_name: 'pushgateway'
     static_configs:
-      - targets: ['localhost:8005']
+      - targets: ['pushgateway:9091']

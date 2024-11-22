@@ -1,50 +1,11 @@
 version: '3.8'
 
 services:
-  human-keypoint-ai-service:
-    image: human-keypoint-ai-service
-    build:
-      context: .
-      dockerfile: docker/fastapi-ai.Dockerfile
-    ports:
-      - "8005:8000"
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-    environment:
-      - KEYPOINT_WEIGHT_PATH=/app/models/model.onnx
-      - KEYPOINT_DEVICE=gpu
-      - KEYPOINT_MAX_IMAGE_SIZE=1024
-
   triton-mount:
     image: nvcr.io/nvidia/tritonserver:23.10-py3
-    ports:
-      - "8000:8000"
-      - "8001:8001"
-      - "8002:8002"
     volumes:
       - ./models:/models
     command: tritonserver --model-repository=/models
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-
-  triton-build:
-    build:
-      context: .
-      dockerfile: docker/triton.Dockerfile
-    ports:
-      - "8000:8000"
-      - "8001:8001"
-      - "8002:8002"
     deploy:
       resources:
         reservations:
@@ -59,6 +20,10 @@ services:
       dockerfile: docker/streamlit.Dockerfile
     ports:
       - "8501:8501"
+    environment:
+      - APP_TRITON_URL=triton-mount:8001
+      - APP_USE_HTTP=false
+      - APP_PUSHGATEWAY_URL=pushgateway:9091
 
   prometheus:
     image: prom/prometheus
@@ -67,7 +32,14 @@ services:
     volumes:
       - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - "9091:9091"
+
   grafana:
     image: grafana/grafana
     ports:
       - "3000:3000"
+    volumes:
+      - ./docker/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
